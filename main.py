@@ -67,14 +67,14 @@ def list_documents() -> dict[str, list[DocumentPayload]]:
     documents: list[DocumentPayload] = []
     stored_documents: dict[str, str] = redis_client.hgetall("document_name_to_id")
 
-    for name, id_str in stored_documents.documents():
+    for name, id_str in stored_documents.items():
         document_id: int = int(id_str)
 
         document_name_str: str | None = redis_client.hget(f"document_id:{document_id}", "document_name")
         if document_name_str is not None:
             document_name: str = document_name_str
         else:
-            continue  # skip this document if it has no name
+            continue  # skip this item if it has no name
 
         document_quantity_str: str | None = redis_client.hget(
             f"document_id:{document_id}", "quantity"
