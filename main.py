@@ -120,7 +120,7 @@ def remove_quantity(document_id: int, quantity: int) -> dict[str, str]:
         document_name: str | None = redis_client.hget(f"document_id:{document_id}", "document_name")
         redis_client.hdel("document_name_to_id", f"{document_name}")
         redis_client.delete(f"document_id:{document_id}")
-        return {"result": "document deleted."}
+        return {"result": "document deleted because quantity >0."}
     else:
         redis_client.hincrby(f"document_id:{document_id}", "quantity", -quantity)
-        return {"result": f"{quantity} documents removed."}
+        return {"result": f"{quantity} removed from quantity of document id:"+str(document_id)}
